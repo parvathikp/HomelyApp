@@ -96,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <EditText
-                        android:hint="min SQFT"
+                        android:hint="min PRICE"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="15sp"
@@ -107,7 +107,7 @@
                         android:textColorHint="@color/black"
                         android:id="@+id/minprice"/>
                     <EditText
-                        android:hint="max SQFT"
+                        android:hint="max PRICE"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="15sp"

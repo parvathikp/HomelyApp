@@ -23,16 +23,9 @@
         android:orientation="vertical">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="230dp"
+            android:layout_height="match_parent"
             android:id="@+id/imghome"
             android:scaleType="centerCrop"
             android:src="@drawable/userhome"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="43dp"
-            android:background="@color/white"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/delimage"
-            android:src="@drawable/delete"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.cardview.widget.CardView>

@@ -4,7 +4,27 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/drawable/buttontype.xml" value="0.24074074074074073" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/drawable/popup.xml" value="0.24074074074074073" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/drawable/style.xml" value="0.24074074074074073" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/drawable/tagstyle.xml" value="0.2703125" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/activity_addhouse.xml" value="0.2427536231884058" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/activity_allhouses.xml" value="0.176" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/activity_edithouse.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/activity_edituser.xml" value="0.4" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/activity_favourites.xml" value="0.176" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/activity_filterhouses.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/activity_otherhousedetails.xml" value="0.176" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/activity_otherimage.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/activity_ownhome.xml" value="0.30925737538148523" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/activity_ownhousedetails.xml" value="0.2" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/activity_ownimage.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/activity_searchhouses.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/activity_user.xml" value="0.25448028673835127" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/activity_userhouse.xml" value="0.1" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/addimgpopup.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/cat_layout.xml" value="0.12291666666666666" />
         <entry key="..\:/Users/ABC/AndroidStudioProjects/FirstScreen/app/src/main/res/layout/sample_register.xml" value="0.23854166666666668" />
       </map>
     </option>

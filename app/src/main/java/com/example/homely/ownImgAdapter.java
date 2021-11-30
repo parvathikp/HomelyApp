@@ -78,6 +78,7 @@ public class ownImgAdapter extends RecyclerView.Adapter<ownImgAdapter.difViewHol
 
     }
 
+
     void deleteimg(int t){
         StringRequest request = new StringRequest(Request.Method.POST, "https://wayless-editor.000webhostapp.com/delImg.php",
                 new Response.Listener<String>() {
@@ -110,3 +111,4 @@ public class ownImgAdapter extends RecyclerView.Adapter<ownImgAdapter.difViewHol
         req.add(request);
     }
 }
+       

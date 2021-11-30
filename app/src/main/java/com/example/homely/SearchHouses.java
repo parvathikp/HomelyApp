@@ -1,7 +1,12 @@
 package com.example.homely;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,6 +24,13 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -26,10 +38,16 @@ import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 public class SearchHouses extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     TextView clrfil,close;
@@ -51,6 +69,7 @@ public class SearchHouses extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchhouses);
+        UserProfile.state=1;
         clrfil=(TextView)findViewById(R.id.clear);
         filt=(ImageView) findViewById(R.id.filter);
         allhouse=(RecyclerView) findViewById(R.id.all);
@@ -85,12 +104,12 @@ public class SearchHouses extends AppCompatActivity implements AdapterView.OnIte
         sort.setAdapter(adap1);
         allhouse.setLayoutManager(new LinearLayoutManager(SearchHouses.this));
         otheradapRec=new ownHouseAdapter(this,allRec);
+        allhouse.setHasFixedSize(true);
         allhouse.setAdapter(otheradapRec);
         clrfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UserProfile.filQ="";//call getHouses();
-                UserProfile.sortint=0;
                 UserProfile.typint=0;
                 UserProfile.salint=0;
                 UserProfile.minps="";
@@ -100,6 +119,7 @@ public class SearchHouses extends AppCompatActivity implements AdapterView.OnIte
                 UserProfile.minss="";
                 UserProfile.maxss="";
                 UserProfile.placep="";
+                getHouses(" WHERE saleType <> \"INACTIVE\" "+sortMap.get(sortList.get(UserProfile.sortint)),false);
             }
         });
         sort.setSelection(UserProfile.sortint);
@@ -109,6 +129,7 @@ public class SearchHouses extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(View v) {
                 filpopup=new Dialog(SearchHouses.this);
+                filpopup.setContentView(R.layout.activity_filterhouses);
                 salet=(Spinner)filpopup.findViewById(R.id.saleType);
                 typet=(Spinner) filpopup.findViewById(R.id.type);
                 mins=(EditText) filpopup.findViewById(R.id.minsqft);
@@ -176,7 +197,7 @@ public class SearchHouses extends AppCompatActivity implements AdapterView.OnIte
                     @Override
                     public void onError(@NonNull Status status) {
                         // TODO: Handle the error.
-                        Toast.makeText(getApplicationContext(), status.toString(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), status.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
                 close.setOnClickListener(new View.OnClickListener() {
@@ -204,39 +225,62 @@ public class SearchHouses extends AppCompatActivity implements AdapterView.OnIte
                         UserProfile.maxss=maxs.getText().toString();
                         UserProfile.placep=places;
                         String s="";
-                        ArrayList<String> expr=new ArrayList<>();
+                        ArrayList<String> expr=new ArrayList<>();expr.clear();
                         if(UserProfile.salint!=0){
-                            expr.add("saleType = "+saleList.get(UserProfile.salint));
+
+                            expr.add("saleType = \""+saleList.get(UserProfile.salint)+"\"");
                         }
                         if(UserProfile.typint!=0){
-                            expr.add("type = "+saleList.get(UserProfile.typint));
+                            expr.add("type = \""+typeList.get(UserProfile.typint)+"\"");
                         }
-                        if(UserProfile.minps!=""){
+                        if(UserProfile.minps.length()>0){
                             expr.add("Price >= "+minp.getText().toString().trim());
                         }
-                        if(UserProfile.maxps!=""){
+                        if(UserProfile.maxps.length()>0){
                             expr.add("Price <= "+maxp.getText().toString().trim());
                         }
-                        if(UserProfile.minss!=""){
-                            expr.add("sqft >= "+maxs.getText().toString().trim());
+                        if(UserProfile.minss.length()>0){
+                            expr.add("sqft >= "+mins.getText().toString().trim());
                         }
-                        if(UserProfile.maxss!=""){
+                        if(UserProfile.maxss.length()>0){
                             expr.add("sqft <= "+maxs.getText().toString().trim());
                         }
-                        if(UserProfile.minbs!=""){
-                            expr.add("sqft >= "+maxs.getText().toString().trim());
+                        if(UserProfile.minbs.length()>0){
+                            expr.add("BHK >= "+minb.getText().toString().trim());
                         }
-                        if(UserProfile.maxbs!=""){
-                            expr.add("sqft >= "+maxs.getText().toString().trim());
+                        if(UserProfile.maxbs.length()>0){
+                            expr.add("BHK <= "+maxb.getText().toString().trim());
+                        }
+                        if(UserProfile.placep.length()>0){
+                            expr.add("Place = \""+places+"\"");
                         }
                         if(expr.size() >0){
-                            s=expr.get(0);
+                            s=" WHERE "+expr.get(0);
+                            for(int i=1;i<expr.size();i++){
+                                s=s+" AND "+expr.get(i);
+                            }
                             //join with where etc.
+                        }UserProfile.filQ=s;
+                        if(UserProfile.filQ==""){
+                            s=" WHERE saleType <> \"INACTIVE\" "+sortMap.get(sortList.get(UserProfile.sortint));
                         }
-                        s=s+" "+sortMap.get(sortList.get(UserProfile.sortint));
+                        else{
+                            s=UserProfile.filQ+" AND saleType <> \"INACTIVE\" "+sortMap.get(sortList.get(UserProfile.sortint));
+                        }
+                        FragmentTransaction ft3 = getSupportFragmentManager()
+                                .beginTransaction();
+                        ft3.remove(getSupportFragmentManager()
+                                .findFragmentById(R.id.place_autocomplete_fragment));
+                        ft3.commit();
+                        filpopup.dismiss();
+                        //Toast.makeText(SearchHouses.this,s,Toast.LENGTH_SHORT).show();
+                        getHouses(s,true);
+
 
                     }
                 });
+                filpopup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                filpopup.show();
             }
         });
 
@@ -245,17 +289,99 @@ public class SearchHouses extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onStart() {
         super.onStart();
-        //call getHouses();
-    }
+        if(UserProfile.filQ==""){
+            getHouses(" WHERE saleType <> \"INACTIVE\" "+sortMap.get(sortList.get(UserProfile.sortint)),false);
+        }
+        else{
+        getHouses(UserProfile.filQ+" AND saleType <> \"INACTIVE\" "+sortMap.get(sortList.get(UserProfile.sortint)),false);
+    }}
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        sorts=(position);
-        //call getHouses()
+        UserProfile.sortint=position;
+        if(UserProfile.filQ==""){
+            getHouses(" WHERE saleType <> \"INACTIVE\" "+sortMap.get(sortList.get(UserProfile.sortint)),false);
+        }
+        else{
+            getHouses(UserProfile.filQ+" AND saleType <> \"INACTIVE\" "+sortMap.get(sortList.get(UserProfile.sortint)),false);
+        }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+    public void getHouses(String constr,boolean isFrompopup){
+        allRec.clear();
+
+        //Toast.makeText(SearchHouses.this,constr,Toast.LENGTH_SHORT).show();
+        ProgressDialog progressDialog=new ProgressDialog(SearchHouses.this);
+        progressDialog.setMessage("Please wait...");
+        progressDialog.show();
+        StringRequest con=new StringRequest(Request.Method.POST, "https://wayless-editor.000webhostapp.com/showAllhouses.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String res) {
+                        progressDialog.dismiss();
+                        try
+                        {   allRec.clear();
+                            JSONObject jsonObject=new JSONObject(res);
+                            String response=jsonObject.getString("message");
+                            if(response.equalsIgnoreCase("-1")){
+                                //Toast.makeText(SearchHouses.this,"Failed",Toast.LENGTH_SHORT).show();
+                            }
+                            else if(response.equalsIgnoreCase("0")){
+                                //Toast.makeText(SearchHouses.this,"No houses found",Toast.LENGTH_SHORT).show();
+                                otheradapRec.notifyDataSetChanged();
+
+                            }
+                            else{
+
+                                JSONArray arr= jsonObject.getJSONArray("data");
+                                if(arr.length()==0){
+                                    //Toast.makeText(SearchHouses.this,"NULL",Toast.LENGTH_SHORT).show();
+                                }
+                                for(int i=0;i< arr.length();i++){
+                                    JSONObject obj=arr.getJSONObject(i);
+                                    allRec.add(new OwnHouse(Integer.parseInt(obj.getString("hid")),Integer.parseInt(obj.getString("oid")),obj.getString("addr"),
+                                            obj.getString("descr"),obj.getString("saleType"),obj.getString("type"),
+                                            obj.getString("place"),Double.parseDouble(obj.getString("sqft")),Integer.parseInt(obj.getString("bhk")),Integer.parseInt(obj.getString("price"))));
+
+                                }
+                                otheradapRec.notifyDataSetChanged();
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                //Toast.makeText(SearchHouses.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> toSend=new HashMap<String,String>();
+                toSend.put("constr",constr);
+                return toSend;
+            }
+        };
+        RequestQueue req= Volley.newRequestQueue(SearchHouses.this);
+        req.add(con);
+    }
+
+    @Override
+    public void onBackPressed() {
+        UserProfile.state=0;
+        Intent returnto=new Intent(SearchHouses.this,UserProfile.class);
+        Gson gson1=new Gson();
+        returnto.putExtra("curUser",gson1.toJson(UserProfile.curUser));
+        startActivity(returnto);
+        //add clicking on phone  number or its icon takes to phone call
     }
 }

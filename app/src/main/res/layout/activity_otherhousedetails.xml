@@ -8,7 +8,7 @@
     android:fillViewport="false"
     android:scrollbars="vertical"
     android:background="#FFCDD2"
-    tools:context=".UserProfile">
+    tools:context=".OtherHousDetails">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,36 +25,30 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:layout_width="0dp"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginStart="15dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="House Details"
-                android:textColor="@color/black"
-                android:textSize="35sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginStart="15dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="House Details"
+                    android:textColor="@color/black"
+                    android:textSize="35sp"
+                    android:textStyle="bold" />
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="100dp"
+                    android:id="@+id/star"
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:id="@+id/edit1"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/edit" />
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="30dp"
-                android:id="@+id/delete1"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="35dp"
-                android:src="@drawable/delete" />
-
-
+                    android:src="@drawable/star"
+                    />
+            </androidx.appcompat.widget.LinearLayoutCompat>
             <androidx.constraintlayout.utils.widget.ImageFilterView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -425,6 +419,7 @@
                         android:textColor="#FF9800"
                         android:textSize="18sp"
                         android:textStyle="bold" />
+
                 </androidx.appcompat.widget.LinearLayoutCompat>
                 <View
                     android:layout_width="match_parent"
@@ -455,14 +450,21 @@
                         android:layout_weight="1"
                         android:id="@+id/owneremail"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginEnd="0dp"
                         android:background="@drawable/buttontype"
                         android:backgroundTint="@color/white"
                         android:layout_marginStart="10dp"
-                        android:text="User Profile"
+                        android:text=""
                         android:textColor="#FF9800"
-                        android:textSize="18sp"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="5dp"
+                        android:id="@+id/mail"
+                        android:src="@drawable/mail"
+                        />
                 </androidx.appcompat.widget.LinearLayoutCompat>
                 <View
                     android:layout_width="match_parent"
@@ -493,14 +495,21 @@
                         android:layout_weight="1"
                         android:id="@+id/ownerphone"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginEnd="0dp"
                         android:background="@drawable/buttontype"
                         android:backgroundTint="@color/white"
                         android:layout_marginStart="10dp"
-                        android:text="User Profile"
+                        android:text="9898897978"
                         android:textColor="#FF9800"
                         android:textSize="18sp"
                         android:textStyle="bold" />
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="5dp"
+                        android:id="@+id/call"
+                        android:src="@drawable/call"
+                        />
                 </androidx.appcompat.widget.LinearLayoutCompat>
                 <View
                     android:layout_width="match_parent"
@@ -514,23 +523,13 @@
         </ScrollView>
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/imglist"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/scroll"
-            app:layout_constraintBottom_toTopOf="@id/addimg"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Image"
-            android:background="@drawable/buttontype"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imglist"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:id="@+id/addimg"/>
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
